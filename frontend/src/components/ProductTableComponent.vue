@@ -6,7 +6,7 @@ const products = ref([]);
 const overlayEdit = ref(false);
 const overlayCreate = ref(false);
 
-const selectedProduct = ref({ // Dados do produto selecionado
+const selectedProduct = ref({
   id: null,
   name: '',
   price: '',
@@ -20,7 +20,7 @@ const productToBeSaved = ref({
 })
 
 const formattedPrice = (price) => {
-  const numericPrice = Number(price); // Converte para número
+  const numericPrice = Number(price);
   if (isNaN(numericPrice)) {
     return '';
   }
@@ -30,7 +30,7 @@ const formattedPrice = (price) => {
 const fetchProducts = async () => {
   try {
     const response = await axios.get("http://localhost:8080/api/v1/products/view");
-    products.value = response.data; // Supondo que o retorno seja uma lista de produtos
+    products.value = response.data;
   } catch (error) {
     console.error("Erro ao buscar os produtos:", error);
   }
@@ -41,7 +41,7 @@ const editProduct = async (id) => {
     selectedProduct.value = {
       id: id,
       name: r.data.name,
-      price: r.data.price, // Valor bruto (não formatado)
+      price: r.data.price,
       stock: r.data.stock,
     };
     overlayEdit.value = true;
@@ -95,14 +95,13 @@ const saveProduct = async () => {
   }
 }
 
-// Buscar os dados quando o componente for montado
 onMounted(fetchProducts);
 </script>
 
 <template>
   <v-main>
     <v-container class="div-titulo">
-      <h1>Produtos Cadastrados</h1>
+      <h1>Produtos</h1>
     </v-container>
 
     <v-container>
@@ -114,6 +113,10 @@ onMounted(fetchProducts);
         <v-card>
           <v-card-title class="d-flex justify-center">Editar Produto</v-card-title>
           <v-card-text>
+            <v-text-field disabled
+              v-model="selectedProduct.id"
+              label="ID do Produto"
+            ></v-text-field>
             <v-text-field
               v-model="selectedProduct.name"
               label="Nome do Produto"
