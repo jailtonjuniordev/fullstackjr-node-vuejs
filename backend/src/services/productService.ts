@@ -21,10 +21,10 @@ export default class ProductService {
         } else {
             products.forEach((doc) => {
                 const product = new Product(
-                    doc.id,
                     doc.data().name,
                     doc.data().price,
                     doc.data().stock,
+                    doc.id,
                 );
                 productArray.push(product);
             });
@@ -37,7 +37,7 @@ export default class ProductService {
         const data = await getDoc(product);
 
         if (data.exists()) {
-            return data.data();
+            return {...data.data(), id: id};
         } else {
             return 'Product Not Found'
         }
